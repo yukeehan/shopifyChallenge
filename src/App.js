@@ -10,9 +10,6 @@ import 'dotenv';
 import axios from 'axios';
 
 
-//components
-// import Repositories from './components/Repositories';
-
 // Axios Config
 const axiosGitHubGraphQL = axios.create({
   // define a base URL for axios when creating a config instance from it
@@ -25,8 +22,9 @@ const axiosGitHubGraphQL = axios.create({
   },
 });
 
-const GET_REPO = `{
-  search(query: "shopify", type: REPOSITORY, first: 10) {
+// pass the repository variable to the query
+const GET_REPO_QUERY = ( repository ) => `{
+  search(query: "${ repository }", type: REPOSITORY, first: 10) {
     repositoryCount
     pageInfo {
       endCursor
@@ -55,27 +53,24 @@ const GET_REPO = `{
 
 class App extends Component {
   state={
-    path: 'shopify',
+    path: '',
     edges: null,
     errors: null,
   }
 
-  componentDidMount(){
-    this.onFetchFromGitHub();
-  }
   onChange = (event)=>{
     this.setState({ path: event.target.value });
   }
 
-  onSubmit = (event)=>{
-    event.preventDefault();
+  onClick = (event)=>{
+    // pass path state to fetch repository varialbe
+    this.onFetchFromGitHub(this.state.path);
   }
 
-  onFetchFromGitHub=()=>{
+  onFetchFromGitHub=( repository )=>{
     axiosGitHubGraphQL
-      .post('',{ query: GET_REPO })
+      .post('',{ query: GET_REPO_QUERY( repository ) })
       .then(result => {
-        console.log(result);
         this.setState({
           edges: result.data.data.search.edges,
           errors: result.data.errors,
@@ -85,20 +80,20 @@ class App extends Component {
 
   render(){
     const { path, edges, errors } = this.state;
-    console.log(edges);
+    console.log(this.state);
     return (
       <div>
-       <Title />
+        <Title />
        <SearchForm
          onChange={this.onChange}
-         onSubmit={this.onSubmit}
+         onClick={this.onClick}
          path={ path }
        />
        {
          edges ? (
            <RepoList edges={ edges }/>
          ) : (
-           <p>Loading</p>
+           <p> </p>
          )
        }
      </div>

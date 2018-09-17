@@ -1,11 +1,8 @@
 import React from 'react';
 
-const SearchForm = ({ onChange, onSubmit, path }) =>{
+const SearchForm = ({ onChange, onClick, path }) =>{
   return(
-    <form onSubmit={ onSubmit }>
-      <label htmlFor="url">
-        show open issues for https://github.com/
-      </label>
+    <div>
       <input
         id="url"
         type="text"
@@ -13,8 +10,8 @@ const SearchForm = ({ onChange, onSubmit, path }) =>{
         onChange={ onChange }
         style={{ width:'300px' }}
       />
-      <button type="submit">Search</button>
-    </form>
+      <button type="submit" onClick={ onClick }>Search</button>
+    </div>
   )
 }
 
