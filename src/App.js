@@ -4,9 +4,6 @@ import Title from './components/Title';
 import RepoList from './components/RepoList';
 import 'tachyons';
 import 'dotenv';
-// import ApolloClient from "apollo-boost";
-// import gql from "graphql-tag";
-// import { ApolloProvider, Query } from "react-apollo";
 import axios from 'axios';
 
 
